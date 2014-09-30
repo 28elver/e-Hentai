@@ -20,7 +20,10 @@
 //設定資料
 - (void)setGalleryDict:(NSDictionary *)dataDict {
 	self.cellLabel.text = dataDict[@"title"];
-    
+	self.cellLabel.lineBreakMode = NSLineBreakByWordWrapping;
+	self.cellLabel.numberOfLines = 0;
+	self.cellDate.text = dataDict[@"posted"];
+	self.cellPage.text=[NSString stringWithFormat:@"%@ /%@",dataDict[@"filecount"],dataDict[@"filesize"]];
     
 	BOOL enableImageMode = [dataDict[imageMode] boolValue];
     
