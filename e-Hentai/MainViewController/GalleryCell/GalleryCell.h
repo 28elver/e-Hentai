@@ -22,7 +22,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *cellDate;
 @property (strong, nonatomic) IBOutlet UILabel *cellPage;
 
-
 //設定資料
 - (void)setGalleryDict:(NSDictionary *)dataDict;
 

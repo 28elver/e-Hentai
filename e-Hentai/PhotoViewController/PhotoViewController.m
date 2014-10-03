@@ -7,6 +7,7 @@
 //
 
 #import "PhotoViewController.h"
+#import "HentaiHeaderView.h"
 
 @interface PhotoViewController ()
 
@@ -375,6 +376,20 @@
 	[self setupInitValues];
     
 	self.downloadKey = [self foundDownloadKey];
+    
+	HentaiHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:@"HentaiHeaderView" owner:self options:nil] objectAtIndex:0];
+	[headerView setHentaiDict:self.hentaiInfo];
+	[headerView setBackgroundColor:[UIColor lightGrayColor]];
+    
+    
+	CGFloat height = [headerView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+	CGRect frame = headerView.frame;
+	frame.size.height = height;
+	headerView.frame = frame;
+	self.hentaiTableView.tableHeaderView = headerView;
+    
+    
+    
     
 	//如果本機有存檔案就用本機的
 	if (self.downloadKey != NSNotFound) {

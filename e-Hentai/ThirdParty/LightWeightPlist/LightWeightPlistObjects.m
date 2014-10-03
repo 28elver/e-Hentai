@@ -12,7 +12,8 @@
 
 #pragma mark - life cycle
 
-- (id)init {
+- (id)init
+{
 	self = [super init];
 	if (self) {
 		self.dataCache = [NSCache new];

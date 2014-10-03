@@ -14,13 +14,15 @@
 
 #pragma mark - class method
 
-+ (NSString *)resourceFolderPathWithFilename:(NSString *)filename {
++ (NSString *)resourceFolderPathWithFilename:(NSString *)filename
+{
 	return [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist", filename]];
 }
 
-+ (NSString *)documentFolderPathWithFilename:(NSString *)filename {
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *documentsDirectory = [paths objectAtIndex:0];
++ (NSString *)documentFolderPathWithFilename:(NSString *)filename
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
 	return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist", filename]];
 }
 
