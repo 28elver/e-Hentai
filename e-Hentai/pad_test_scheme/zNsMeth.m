@@ -17,4 +17,9 @@
 	return [checkHentaiKey stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
 }
 
++(NSString*)zMethReturnTrueFileNameOnAddLastPathComponent:(NSString*)zStr{
+	NSArray *zArry=[zStr componentsSeparatedByString:@"/"];
+//	NSLog(@"[%d],zArry=[%@]",zArry.count,zArry);
+	return [NSString stringWithFormat:@"%@%@",[zArry objectAtIndex:zArry.count-2],[zArry objectAtIndex:zArry.count-1]];
+}
 @end

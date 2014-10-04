@@ -8,6 +8,7 @@
 
 #import "PhotoViewController.h"
 #import "HentaiHeaderView.h"
+#import "zNsMeth.h"
 
 @interface PhotoViewController ()
 
@@ -164,7 +165,7 @@
 	NSInteger returnIndex = -1;
 	for (NSInteger i = self.realDisplayCount; i < [self.hentaiImageURLs count]; i++) {
 		NSString *eachImageString = self.hentaiImageURLs[i];
-		if (self.hentaiResults[[eachImageString lastPathComponent]]) {
+		if (self.hentaiResults[[zNsMeth zMethReturnTrueFileNameOnAddLastPathComponent:eachImageString]]) {
 			returnIndex = i;
 		}
 		else {
@@ -265,7 +266,7 @@
 
 - (void)downloadResult:(NSString *)urlString heightOfSize:(CGFloat)height isSuccess:(BOOL)isSuccess {
 	if (isSuccess) {
-		self.hentaiResults[[urlString lastPathComponent]] = @(height);
+		self.hentaiResults[[zNsMeth zMethReturnTrueFileNameOnAddLastPathComponent:urlString]] = @(height);
 		NSInteger availableCount = [self availableCount];
 		if (availableCount > self.realDisplayCount) {
 			if (availableCount >= 1 && !self.isRemovedHUD) {
@@ -323,13 +324,13 @@
 	static NSString *cellIdentifier = @"HentaiPhotoCell";
 	HentaiPhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
 	NSString *eachImageString = self.hentaiImageURLs[indexPath.row];
-	if (self.hentaiResults[[eachImageString lastPathComponent]]) {
+	if (self.hentaiResults[[zNsMeth zMethReturnTrueFileNameOnAddLastPathComponent:eachImageString]]) {
 		NSIndexPath *copyIndexPath = [indexPath copy];
 		__weak PhotoViewController *weakSelf = self;
         
 		//讀取不卡線程
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-		    UIImage *image = [UIImage imageWithData:[weakSelf.hentaiFilesManager read:[eachImageString lastPathComponent]]];
+		    UIImage *image = [UIImage imageWithData:[weakSelf.hentaiFilesManager read:[zNsMeth zMethReturnTrueFileNameOnAddLastPathComponent:eachImageString]]];
             
 		    if ([[tableView indexPathForCell:cell] compare:copyIndexPath] == NSOrderedSame && weakSelf) {
 		        dispatch_async(dispatch_get_main_queue(), ^{
@@ -348,14 +349,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString *eachImageString = self.hentaiImageURLs[indexPath.row];
-	if (self.hentaiResults[[eachImageString lastPathComponent]]) {
+	if (self.hentaiResults[[zNsMeth zMethReturnTrueFileNameOnAddLastPathComponent:eachImageString]]) {
 		//如果畫面是直向的時候, 長度要重新算
 		if (self.interfaceOrientation == UIDeviceOrientationPortrait) {
-			CGSize newSize = [self imagePortraitHeight:CGSizeMake([UIScreen mainScreen].bounds.size.height, [self.hentaiResults[[eachImageString lastPathComponent]] floatValue])];
+			CGSize newSize = [self imagePortraitHeight:CGSizeMake([UIScreen mainScreen].bounds.size.height, [self.hentaiResults[[zNsMeth zMethReturnTrueFileNameOnAddLastPathComponent:eachImageString]] floatValue])];
 			return newSize.height;
 		}
 		else {
-			return [self.hentaiResults[[eachImageString lastPathComponent]] floatValue];
+			return [self.hentaiResults[[zNsMeth zMethReturnTrueFileNameOnAddLastPathComponent:eachImageString]] floatValue];
 		}
 	}
 	else {

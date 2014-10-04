@@ -54,7 +54,8 @@
 	zBoolIsAskPictureMode = NO;
 
 	self.listIndex = 0;
-	enableH_Image = NO;
+	enableH_Image = YES;
+//	enableH_Image = NO;
 	self.listArray = [NSMutableArray array];
 	searchWord = @"";
 

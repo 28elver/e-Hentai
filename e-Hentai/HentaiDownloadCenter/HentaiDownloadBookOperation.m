@@ -7,6 +7,7 @@
 //
 
 #import "HentaiDownloadBookOperation.h"
+#import "zNsMeth.h"
 
 @interface HentaiDownloadBookOperation ()
 
@@ -72,7 +73,7 @@
 
 - (void)downloadResult:(NSString *)urlString heightOfSize:(CGFloat)height isSuccess:(BOOL)isSuccess {
 	if (isSuccess) {
-		self.hentaiResults[[urlString lastPathComponent]] = @(height);
+		self.hentaiResults[[zNsMeth zMethReturnTrueFileNameOnAddLastPathComponent:urlString]] = @(height);
 	}
 	else {
 		NSNumber *retryCount = self.retryMap[urlString];

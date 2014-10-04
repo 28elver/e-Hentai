@@ -10,4 +10,6 @@
 
 @interface zNsMeth : NSObject
 + (NSString *)zMethReturnHentaiKey:(NSString *)zStrParmer ForTitle:(NSString *)zStrTitle ForHttpUrl:(NSString *)zStrUrl;
+
++(NSString*)zMethReturnTrueFileNameOnAddLastPathComponent:(NSString*)zStr;
 @end
