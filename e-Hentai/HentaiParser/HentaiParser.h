@@ -11,7 +11,8 @@
 typedef enum {
 	HentaiParserStatusFail,
 	HentaiParserStatusSuccess
-} HentaiParserStatus;
+}
+HentaiParserStatus;
 
 @interface HentaiParser : NSObject
 
