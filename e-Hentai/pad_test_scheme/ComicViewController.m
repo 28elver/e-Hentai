@@ -57,7 +57,7 @@
 @property (nonatomic, strong) NSString *zStrHentaiURLString;
 @property (nonatomic, strong) NSString *zStrMaxHentaiCount;
 
-@property (nonatomic, retain)HentaiHeaderView *headerView;
+@property (nonatomic, retain) HentaiHeaderView *headerView;
 
 //放在section參考用,以後可能會移除
 @property (nonatomic, retain) UIView *zViewOnSectionStatus;
@@ -138,18 +138,18 @@
 
 - (void)deleteTempCrashActionOnPad {
 	[[FilesManager cacheFolder] rd:self.zStrHentaiKey];
-//	[HentaiCacheLibraryDictionary removeObjectForKey:self.zIntDownloadKey];
+	//	[HentaiCacheLibraryDictionary removeObjectForKey:self.zIntDownloadKey];
 	[self backActionOnPad];
 }
 
 - (void)zMethReCheckOnPad {
-	NSLog(@"[%d]self.zMuArrayHentaiImageURLs[%@]",self.zMuArrayHentaiImageURLs.count,self.zMuArrayHentaiImageURLs);
+	NSLog(@"[%d]self.zMuArrayHentaiImageURLs[%@]", self.zMuArrayHentaiImageURLs.count, self.zMuArrayHentaiImageURLs);
 	NSLog(@"zMethReCheckOnPad");
-	NSLog(@"[%d]zMuDictForIndexHentaiImageURLs[%@]",self.zMuDictForIndexHentaiImageURLs.count,self.zMuDictForIndexHentaiImageURLs);
+	NSLog(@"[%d]zMuDictForIndexHentaiImageURLs[%@]", self.zMuDictForIndexHentaiImageURLs.count, self.zMuDictForIndexHentaiImageURLs);
 	NSLog(@"zMethReCheckOnPad");
-	NSLog(@"[%d]zMuDictHentaiResults[%@]",self.zMuDictHentaiResults.count,self.zMuDictHentaiResults);
+	NSLog(@"[%d]zMuDictHentaiResults[%@]", self.zMuDictHentaiResults.count, self.zMuDictHentaiResults);
 	NSLog(@"zMethReCheckOnPad");
-	NSLog(@"[%d]zMuDictRetryMap[%@]",self.zMuDictRetryMap.count,self.zMuDictRetryMap);
+	NSLog(@"[%d]zMuDictRetryMap[%@]", self.zMuDictRetryMap.count, self.zMuDictRetryMap);
 	if (self.zMuArrayFailHentaiImageURLs.count > 0) {
 		NSString *zStr;
 		for (int i = 0; i < self.zMuArrayFailHentaiImageURLs.count; i++) {
@@ -165,17 +165,15 @@
 
 	if (self.enableH_Image) {
 		sender.title = @"貓圖";
-		self.headerView.hidden=NO;
+		self.headerView.hidden = NO;
 	}
 	else {
 		sender.title = @"H圖";
-		self.headerView.hidden=YES;
+		self.headerView.hidden = YES;
 	}
 	[self.hentaiTableView reloadRowsAtIndexPaths:[self.hentaiTableView indexPathsForVisibleRows]
-					 withRowAnimation:UITableViewRowAnimationNone];
-
+								withRowAnimation:UITableViewRowAnimationNone];
 }
-
 
 #pragma mark - setup inits
 
@@ -198,7 +196,7 @@
 	self.navigationItem.rightBarButtonItem = deleteButton;
 
 
-	self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:deleteButton,saveButton, changeModeItem1,changeModeItem2, nil];
+	self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:deleteButton, saveButton, changeModeItem1, changeModeItem2, nil];
 
 	self.zBoolIsDoingHentaiImageURLs = NO;
 	//註冊 cell
@@ -296,18 +294,18 @@
 
 //製作要給予下載Meth的的列表清單
 - (void)parserRequest:(NSString *)zStrParmer {
-	NSLog(@"zStrParmer=[%@]",zStrParmer);
+	NSLog(@"zStrParmer=[%@]", zStrParmer);
 	if (!self.zBoolIsDoingHentaiImageURLs) {
 		NSLog(@"!self.zBoolIsDoingHentaiImageURLs");
 		self.zBoolIsDoingHentaiImageURLs = YES;
 		__weak ComicViewController *weakSelf = self;
 		NSLog(@"parserRequest_1-1");
-		self.zIntHentaiIndex=(self.zMuArrayHentaiImageURLs.count+1)/40;
+		self.zIntHentaiIndex = (self.zMuArrayHentaiImageURLs.count + 1) / 40;
 
 		[HentaiParser requestImagesAtURL:self.zStrHentaiURLString atIndex:self.zIntHentaiIndex completion: ^(HentaiParserStatus status, NSArray *images) {
-			NSLog(@"status =[%@] images=[%@]",status?@"YES":@"NO",images);
+			NSLog(@"status =[%@] images=[%@]", status ? @"YES" : @"NO", images);
 			if (status && weakSelf
-				&& !images.count==0) {
+				&& !images.count == 0) {
 				NSLog(@"status && weakSelf");
 				__strong ComicViewController *strongSelf = weakSelf;
 				[strongSelf.zMuArrayHentaiImageURLs addObjectsFromArray:images];
@@ -334,12 +332,14 @@
 				}
 				self.zBoolIsDoingHentaiImageURLs = NO;
 				NSLog(@"viewDidLoad　End");
-			}else{
-				NSLog(@"No Do zStrParmer=[%@]",zStrParmer);
+			}
+			else {
+				NSLog(@"No Do zStrParmer=[%@]", zStrParmer);
 				self.zBoolIsDoingHentaiImageURLs = NO;
 			}
 		}];
-	}else{
+	}
+	else {
 		NSLog(@"have  self.zBoolIsDoingHentaiImageURLs");
 	}
 }
@@ -399,25 +399,7 @@
 - (void)downloadResult:(NSString *)urlString heightOfSize:(CGFloat)height isSuccess:(BOOL)isSuccess {
 	NSInteger zIntPage = [self.zMuArrayHentaiImageURLs indexOfObject:urlString];
 	[self changeTitle];
-	NSLog(@"urlString=[%@]",urlString);
-//	NSString *url=[NSString stringWithFormat:@"%@",urlString];
-//	NSLog(@"handleOpenURL-Alls=[%@]",[NSString stringWithFormat:@"%@",[url stringByDeletingPathExtension]]);
-//	NSLog(@"handleOpenURL-Allu=[%@]",[NSString stringWithFormat:@"%@",[url pathExtension]]);
-////	NSLog(@"handleOpenURL-Allb=[%@]",[NSString stringWithFormat:@"%@",[url stringByAppendingPathExtension]]);
-////	NSLog(@"handleOpenURL-Scheme=[%@]",[NSString stringWithFormat:@"%@",[url scheme]]);
-////	NSLog(@"handleOpenURL-Host=[%@]",[NSString stringWithFormat:@"%@",[url host]]);
-////	NSLog(@"handleOpenURL-Port=[%@]",[NSString stringWithFormat:@"%@",[url port]]);
-////	NSLog(@"handleOpenURL-Path=[%@]",[NSString stringWithFormat:@"%@",[url path]]);
-////	NSLog(@"handleOpenURL-RelativePath=[%@]",[NSString stringWithFormat:@"%@",[url relativePath]]);
-////	NSLog(@"handleOpenURL-PathComponents(s)=[%@]",[NSString stringWithFormat:@"%@",[url pathComponents]]);
-////	NSLog(@"handleOpenURL-PathComponents(a)=[%@]",[url pathComponents]);
-////	NSLog(@"handleOpenURL-PathExtension=[%@]",[NSString stringWithFormat:@"%@",[url pathExtension]]);
-////	NSLog(@"handleOpenURL-ParameterString=[%@]",[NSString stringWithFormat:@"%@",[url parameterString]]);
-////	NSLog(@"handleOpenURL-Query=[%@]",[NSString stringWithFormat:@"%@",[url query]]);
-////	NSLog(@"handleOpenURL-Fragment=[%@]",[NSString stringWithFormat:@"%@",[url fragment]]);
-////	NSLog(@"handleOpenURL-User=[%@]",[NSString stringWithFormat:@"%@",[url user]]);
-////	NSLog(@"handleOpenURL-PassWord=[%@]",[NSString stringWithFormat:@"%@",[url password]]);
-//
+	NSLog(@"urlString=[%@]", urlString);
 
 	if (isSuccess) {
 		self.zMuDictHentaiResults[[zNsMeth zMethReturnTrueFileNameOnAddLastPathComponent:urlString]] = @(height);
@@ -467,30 +449,29 @@
 //改變Title(修正,目前移到TableView的Section)
 - (void)changeTitle {
 	// 當前頁數 / ( 可到頁數 / 已下載頁數 / 總共頁數 )已分析數量:佇列數量-錯誤數(已累積錯誤數)
-	NSString *zStrUrlPath=@"0";
-	if ([self.zMuDictForIndexHentaiImageURLs objectForKey:[NSString stringWithFormat:@"%lu",self.zIndexPathrow]]) {
-		zStrUrlPath=[self.zMuDictForIndexHentaiImageURLs objectForKey:[NSString stringWithFormat:@"%lu",self.zIndexPathrow]];
+	NSString *zStrUrlPath = @"0";
+	if ([self.zMuDictForIndexHentaiImageURLs objectForKey:[NSString stringWithFormat:@"%lu", self.zIndexPathrow]]) {
+		zStrUrlPath = [self.zMuDictForIndexHentaiImageURLs objectForKey:[NSString stringWithFormat:@"%lu", self.zIndexPathrow]];
 	}
 
 	self.zLabelOnSectionStatus.text = [NSString stringWithFormat:
-//									   @"%@\n當前%lu (可到%ld/ 已下%lu/ 總共%@)已分析%lu(%lu)/ %@佇列%lu()/ 錯誤%lu(累積%lu)\n%@\n%@\n%@"
+									   //									   @"%@\n當前%lu (可到%ld/ 已下%lu/ 總共%@)已分析%lu(%lu)/ %@佇列%lu()/ 錯誤%lu(累積%lu)\n%@\n%@\n%@"
 									   @"當前%lu (可到%ld/ 已下%lu/ 總共%@)已分析%lu(%lu)/ %@佇列%lu()/ 錯誤%lu(累積%lu)"
-//									   , self.zStrHentaiKey
+									   //									   , self.zStrHentaiKey
 									   , (unsigned long)self.zIndexPathrow
 									   , (long)self.zIntRealDisplayCount
 									   , (unsigned long)[self.zMuDictHentaiResults count]
 									   , self.zStrMaxHentaiCount
 									   , (unsigned long)self.zMuArrayHentaiImageURLs.count
-									   ,self.zIntHentaiIndex
-									   , self.zBoolIsDoingHentaiImageURLs?@"|":@"-"
+									   , self.zIntHentaiIndex
+									   , self.zBoolIsDoingHentaiImageURLs ? @"|":@"-"
 									   , [self.zOpQueHentaiQueue operationCount]
 									   , self.zMuArrayFailHentaiImageURLs.count
 									   , self.zIntFailCount
-//									   ,self.zStrEachImageString
-//									   ,self.zStrLocalPathImageString
-//									   ,zStrUrlPath
+									   //									   ,self.zStrEachImageString
+									   //									   ,self.zStrLocalPathImageString
+									   //									   ,zStrUrlPath
 									   ];
-
 }
 
 #pragma mark - UITableViewDataSource
@@ -499,6 +480,7 @@
 	//直接秀最大值
 	return [self.zStrMaxHentaiCount integerValue] + 1;
 }
+
 //-  (void) tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
 //	if (indexPath.row==0) {
 //		self.headerView.hidden=YES;
@@ -513,7 +495,7 @@
 		&& [self.zMuArrayHentaiImageURLs count] < [self.zStrMaxHentaiCount integerValue]
 		&& self.zOpQueHentaiQueue.operationCount < 10
 		) {
-//		self.zIntHentaiIndex++;
+		//		self.zIntHentaiIndex++;
 		[self parserRequest:NSStringFromSelector(_cmd)];
 	}
 
@@ -526,7 +508,6 @@
 		cell.hentaiPageNumber.hidden = YES;
 	}
 	else {
-
 		cell.hentaiImageView.hidden = NO;
 		cell.hentaiPageNumber.hidden = NO;
 		NSString *eachImageString;
@@ -539,7 +520,7 @@
 		//讀取不卡線程
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 			UIImage *image;
-			NSString *zStrssss=@"No Take";
+			NSString *zStrssss = @"No Take";
 			if (!eachImageString
 				|| [eachImageString isEqualToString:@""]) {
 				image = [UIImage imageNamed:@"Images/1.jpg"];
@@ -551,15 +532,16 @@
 			else {
 				if (!self.enableH_Image) {
 					image = [UIImage imageNamed:@"Images/0.PNG"];
-				}else{
+				}
+				else {
 					image = [UIImage imageWithData:[weakSelf.hentaiFilesManager read:[zNsMeth zMethReturnTrueFileNameOnAddLastPathComponent:eachImageString]]];
-					zStrssss=[NSString stringWithFormat:@"%@",[zNsMeth zMethReturnTrueFileNameOnAddLastPathComponent:eachImageString]];
+					zStrssss = [NSString stringWithFormat:@"%@", [zNsMeth zMethReturnTrueFileNameOnAddLastPathComponent:eachImageString]];
 				}
 			}
-			self.zStrEachImageString=[NSString stringWithFormat:@"%@",eachImageString];
-			self.zStrLocalPathImageString=[NSString stringWithFormat:@"%@",zStrssss];
-			NSLog(@"row=[%lu][%@]",copyIndexPath.row,weakSelf?@"YES":@"NO");
-			if ([[tableView indexPathForCell:cell] compare:copyIndexPath]== NSOrderedSame
+			self.zStrEachImageString = [NSString stringWithFormat:@"%@", eachImageString];
+			self.zStrLocalPathImageString = [NSString stringWithFormat:@"%@", zStrssss];
+			NSLog(@"row=[%lu][%@]", copyIndexPath.row, weakSelf ? @"YES" : @"NO");
+			if ([[tableView indexPathForCell:cell] compare:copyIndexPath] == NSOrderedSame
 				&& weakSelf
 				) {
 				dispatch_async(dispatch_get_main_queue(), ^{
@@ -600,15 +582,13 @@
 	return self.zViewOnSectionStatus;
 }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//	[self changeTitle];
+	//	[self changeTitle];
 	CGSize newSize;
 	NSString *eachImageString;
 	if ([self.zMuDictForIndexHentaiImageURLs objectForKey:[NSString stringWithFormat:@"%lu", indexPath.row]]) {
@@ -630,10 +610,11 @@
 		}
 	}
 	if (newSize.height < 1
-		&&!indexPath.row==0) {
+		&& !indexPath.row == 0) {
 		newSize.height = 100;
-	}else if(indexPath.row==0){
-		newSize.height=0;
+	}
+	else if (indexPath.row == 0) {
+		newSize.height = 0;
 	}
 	return newSize.height;
 }
@@ -652,8 +633,8 @@
 
 	self.zIntDownloadKey = [self foundzIntDownloadKey];
 
-	self.enableH_Image =YES;
-//	self.enableH_Image =NO;
+	self.enableH_Image = YES;
+	//	self.enableH_Image =NO;
 
 
 
@@ -663,13 +644,13 @@
 
 
 	CGFloat height = [self.headerView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-//	CGFloat height = [[UIScreen mainScreen]bounds].size.height;
+	//	CGFloat height = [[UIScreen mainScreen]bounds].size.height;
 	CGRect frame = self.headerView.frame;
 	frame.size.height = height;
 	self.headerView.frame = frame;
 
-	frame=self.headerView.hentaiImage.frame;
-	self.headerView.hentaiThumbImage.frame=CGRectMake(frame.origin.x, frame.origin.y, 320, frame.size.height);
+	frame = self.headerView.hentaiImage.frame;
+	self.headerView.hentaiThumbImage.frame = CGRectMake(frame.origin.x, frame.origin.y, 320, frame.size.height);
 
 
 
@@ -677,9 +658,10 @@
 	self.hentaiTableView.tableHeaderView = self.headerView;
 
 	if (!self.enableH_Image) {
-		self.headerView.hidden=YES;
-	}else{
-		self.headerView.hidden=NO;
+		self.headerView.hidden = YES;
+	}
+	else {
+		self.headerView.hidden = NO;
 	}
 	//如果本機有存檔案就用本機的
 	if (self.zIntDownloadKey != NSNotFound) {

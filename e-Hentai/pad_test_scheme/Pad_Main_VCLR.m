@@ -74,8 +74,10 @@
 - (void)zMethCreateNavBarBtn {
 	UIBarButtonItem *changeThumbModeItem = [[UIBarButtonItem alloc] initWithTitle:@"H圖" style:UIBarButtonItemStylePlain target:self action:@selector(changeImageMode0:)];
 	UIBarButtonItem *pushBtnAskModeItem = [[UIBarButtonItem alloc] initWithTitle:@"See" style:UIBarButtonItemStylePlain target:self action:@selector(changeImageMode1:)];
-
 	self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:changeThumbModeItem, pushBtnAskModeItem, nil];
+//	[NSString stringWithFormat:@"V%@_H%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+	UIBarButtonItem *verShowItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"V%@_H%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] style:UIBarButtonItemStylePlain target:self action:@selector(showVer01:)];
+	self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:verShowItem, nil];
 }
 
 - (void)zMethCreateListCollectionView {
@@ -158,7 +160,9 @@
 }
 
 #pragma mark - User Action
+-(void)showVer01:(UIBarButtonItem *)sender {
 
+}
 - (void)changeImageMode0:(UIBarButtonItem *)sender {
 	enableH_Image = !enableH_Image;
 

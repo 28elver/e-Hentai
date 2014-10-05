@@ -13,6 +13,7 @@
 @interface HentaiFilterView ()
 {
 	NSMutableArray *filterEnableArray;
+	NSMutableArray *zMuArraySaveUIBtn;
 }
 
 
@@ -67,7 +68,7 @@
 		NSNumber *tapTag = @(YES);
 		[filterEnableArray insertObject:tapTag atIndex:i];
 
-		UIButton *filterBtn = [[UIButton alloc] initWithFrame:CGRectMake(x, y, CGRectGetWidth(self.frame) / 2, 40)];
+		UIButton *filterBtn = [[UIButton alloc] initWithFrame:CGRectMake(x, y, CGRectGetWidth(self.frame) / 2, 30)];
 		filterBtn.tag = i;
 		filterBtn.titleLabel.textColor = [UIColor whiteColor];
 		NSNumber *filterTag = @(i);
@@ -77,6 +78,10 @@
 		[filterBtn addTarget:self action:@selector(buttonPress:) forControlEvents:UIControlEventTouchUpInside];
 		[self addSubview:filterBtn];
 	}
+}
+
+-(void)zMethRetarySetBtnViewFrame:(NSDictionary*)zDictParmer{
+
 }
 
 - (UIColor *)colorMapping:(NSNumber *)filterTag {
