@@ -12,4 +12,6 @@
 + (NSString *)zMethReturnHentaiKey:(NSString *)zStrParmer ForTitle:(NSString *)zStrTitle ForHttpUrl:(NSString *)zStrUrl;
 
 +(NSString*)zMethReturnTrueFileNameOnAddLastPathComponent:(NSString*)zStr;
+
++(NSDictionary*)zMethReturnDate:(NSDictionary*)zMuDictSendDate doWhateParam:(NSString*)zStrParam;
 @end
