@@ -389,7 +389,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex) {
-		[SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
+//		[SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
 		[self waitingOnDownloadFinish];
 	}
 }
@@ -673,7 +673,7 @@
 	else {
 		NSLog(@"Take net");
 		self.hentaiFilesManager = [[[FilesManager cacheFolder] fcd:@"Hentai"] fcd:self.zStrHentaiKey];
-		[SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
+//		[SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
 		[self parserRequest:NSStringFromSelector(_cmd)];
 	}
 }

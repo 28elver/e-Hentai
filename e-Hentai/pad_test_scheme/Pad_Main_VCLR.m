@@ -8,13 +8,15 @@
 
 #import "Pad_Main_VCLR.h"
 #import "HentaiSearchFilter.h"
-#import "HentaiFilterView.h"
+#import "zNsMeth.h"
 
 @interface Pad_Main_VCLR ()
 {
 	BOOL enableH_Image;
 	BOOL zBoolIsAskPictureMode;
 	NSString *searchWord;
+	NSMutableArray *zMuArrayHistory;
+	NSMutableArray *zMuArrayBookMark;
 	HentaiFilterView *filterView;
 }
 
@@ -30,14 +32,24 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	NSLog(@"viewWillAppear");
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hentaiDownloadSuccess:) name:HentaiDownloadSuccessNotification object:nil];
 }
+- (void)viewDidAppear:(BOOL)animated{
+	NSLog(@"viewDidAppear");
+}
 
+- (void)viewDidDisappear:(BOOL)animated:(BOOL)animated {
+	NSLog(@"viewDidDisappear");
+}
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
+	NSLog(@"viewWillDisappear");
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:HentaiDownloadSuccessNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+	[zNsMeth zMethReturnDate:[NSDictionary dictionaryWithObjectsAndKeys:zMuArrayHistory,@"History",nil] doWhateParam:@"SaveHistory.plist"];
+	[zNsMeth zMethReturnDate:[NSDictionary dictionaryWithObjectsAndKeys:zMuArrayHistory,@"BookMark",nil] doWhateParam:@"SaveBookMark.plist"];
 }
 
 - (void)dealloc {
@@ -59,12 +71,15 @@
 	self.listArray = [NSMutableArray array];
 	searchWord = @"";
 
-
+	zMuArrayHistory=[[NSMutableArray alloc]initWithArray:[[zNsMeth zMethReturnDate:nil doWhateParam:@"History.plist"]objectForKey:@"History"] copyItems:YES];
+	zMuArrayBookMark=[[NSMutableArray alloc]initWithArray:[[zNsMeth zMethReturnDate:nil doWhateParam:@"BookMark.plist"]objectForKey:@"BookMark"] copyItems:YES];
 	[self zMethCreateListCollectionView];
 	[self zMethCreateNavBarBtn];
 	[self zMethCreateSearchBar];
 	[self zMethCleanImageCache];
 
+	
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChange:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChange:) name:UIKeyboardWillHideNotification object:nil];
 }
@@ -76,7 +91,10 @@
 	UIBarButtonItem *pushBtnAskModeItem = [[UIBarButtonItem alloc] initWithTitle:@"See" style:UIBarButtonItemStylePlain target:self action:@selector(changeImageMode1:)];
 	self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:changeThumbModeItem, pushBtnAskModeItem, nil];
 //	[NSString stringWithFormat:@"V%@_H%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
-	UIBarButtonItem *verShowItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"V%@_H%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] style:UIBarButtonItemStylePlain target:self action:@selector(showVer01:)];
+	UIBarButtonItem *verShowItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"V%@_H%@"
+								,[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
+								,[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]
+																		   ] style:UIBarButtonItemStylePlain target:self action:@selector(showVer01:)];
 	self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:verShowItem, nil];
 }
 
@@ -119,14 +137,21 @@
 	self.listCollectionView.frame = screenSize;
 
 	//調整 filterView 的大小
-	CGFloat keyboardHeight = 412;
-	CGRect filterFrame = CGRectMake(0, 0, CGRectGetWidth(screenSize), CGRectGetHeight(screenSize) - keyboardHeight - 64);
-	filterView = [[HentaiFilterView alloc] initWithFrame:filterFrame];
-	self.searchBar.inputAccessoryView = filterView;
+//	CGFloat keyboardHeight = 412;
+//	CGRect filterFrame = CGRectMake(0, 0, CGRectGetWidth(screenSize), CGRectGetHeight(screenSize) - keyboardHeight - 64);
+//	filterView = [[HentaiFilterView alloc] initWithFrame:filterFrame];
+//	self.searchBar.inputAccessoryView = filterView;
+	filterView = [[HentaiFilterView alloc] initWithFrame:CGRectMake(0, 64, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height-412)];
+	[filterView zMethSetHistoryTableViewDataSource:[NSDictionary dictionaryWithObjectsAndKeys:zMuArrayHistory,@"History",nil]];
+	[filterView zMethSetBokMarkTableViewDataSource:[NSDictionary dictionaryWithObjectsAndKeys:zMuArrayBookMark,@"BookMark",nil]];
+//	[filterView setScrollView];
+//	[filterView setTableView];
+	filterView.delegate=self;
+	filterView.hidden=YES;
+	[self.view addSubview:filterView];
 }
 
 #pragma mark - Method
-
 - (void)reloadDatas {
 	self.listIndex = 0;
 	__weak Pad_Main_VCLR *weakSelf = self;
@@ -197,11 +222,12 @@
 }
 
 #pragma mark -  UISearchBarDelegate
-
-
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
 	self.searchBar.showsCancelButton = YES;
-
+	[filterView zMethSetHistoryTableViewDataSource:[NSDictionary dictionaryWithObjectsAndKeys:zMuArrayHistory,@"History",nil]];
+	[filterView zMethSetBokMarkTableViewDataSource:[NSDictionary dictionaryWithObjectsAndKeys:zMuArrayBookMark,@"BookMark",nil]];
+	[filterView zMethReloadTableVie];
+	filterView.hidden=NO;
 	if ([searchBar.text isEqualToString:@""]) {
 		[filterView selectAll];
 	}
@@ -212,16 +238,19 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
 	[self.searchBar resignFirstResponder];
 	searchWord = searchBar.text;
+	filterView.hidden=YES;
 	[self reloadDatas];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
 	searchWord = searchBar.text;
+	filterView.hidden=YES;
 	self.searchBar.showsCancelButton = NO;
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
 	searchWord = searchBar.text;
+	filterView.hidden=YES;
 	self.searchBar.showsCancelButton = NO;
 	[self.searchBar resignFirstResponder];
 }
@@ -305,7 +334,6 @@
 }
 
 #pragma mark - UIAlertViewDelegate
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSDictionary *hentaiInfo = self.listArray[alertView.tag];
 	if (buttonIndex) {
@@ -336,6 +364,11 @@
 	else {
 		ComicViewController *comicViewController = [ComicViewController new];
 		comicViewController.hentaiInfo = hentaiInfo;
+//		NSLog(@"Input=[%@]",hentaiInfo);
+
+		[zMuArrayHistory insertObject:[NSDictionary dictionaryWithObjectsAndKeys:hentaiInfo,@"hentaiInfo",
+														[NSString stringWithFormat:@"%@",[NSDate new]],@"ReadTime",
+																				  nil] atIndex:0];
 		[hentaiNavigation pushViewController:comicViewController animated:YES];
 	}
 }
@@ -345,6 +378,11 @@
 - (void)hentaiDownloadSuccess:(NSNotification *)notification {
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"下載完成!" message:notification.object delegate:nil cancelButtonTitle:@"好~ O3O" otherButtonTitles:nil];
 	[alert show];
+}
+#pragma mark - HentaiFilter Delegate
+-(void)zHentaiFilterReturnString:(NSString*)zStrString{
+	NSString *zStrTemp=[NSString stringWithFormat:@"%@",self.searchBar.text];
+	self.searchBar.text=[NSString stringWithFormat:@"%@%@",zStrTemp,zStrString];
 }
 
 @end

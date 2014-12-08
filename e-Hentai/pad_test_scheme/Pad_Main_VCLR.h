@@ -15,7 +15,15 @@
 #import "PhotoViewController.h"
 #import "FakeViewController.h"
 
-@interface Pad_Main_VCLR : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UIAlertViewDelegate, UISearchBarDelegate>
+#import "HentaiFilterView.h"
+
+@interface Pad_Main_VCLR : UIViewController
+<UICollectionViewDataSource
+,UICollectionViewDelegate
+,UIAlertViewDelegate
+,UISearchBarDelegate
+,HentaiFilterViewDelegate
+>
 
 @property (nonatomic, retain) UICollectionView *listCollectionView;
 
