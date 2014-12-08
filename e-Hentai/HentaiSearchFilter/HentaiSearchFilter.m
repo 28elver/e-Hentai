@@ -44,8 +44,9 @@
     
 	//apply
 	filterUrl = [filterUrl stringByAppendingString:@"&f_apply=Apply+Filter"];
-    
-	return filterUrl;
+	return [filterUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+//	return filterUrl;
 }
 
 @end
